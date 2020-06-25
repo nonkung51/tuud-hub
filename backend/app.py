@@ -2,6 +2,9 @@ from flask import Flask, flash, request, render_template, Response, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from collections import OrderedDict 
+import sys
+sys.path.append('../')
+from model224x224 import predict
 import json
 import os
 import csv
@@ -19,9 +22,11 @@ def hello_world():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    print(request.files.to_dict()[''])
-    
-    file = request.files.to_dict()['']
+    #print(request.files.to_dict()[''])
+    title = request.form.get('title')
+    #print(request.form.get('title'))
+    owner = request.form.get('owner') 
+    file = request.files.to_dict()['files']
 
     if file.filename == '':
         print('no file...')
@@ -39,11 +44,15 @@ def upload():
         timeStamp = getTime()
         newfilename = secure_filename(newFileName(filename, timeStamp))
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], newfilename)
-        writeDB('test', filepath, timeStamp)
         file.save(filepath)
+        predict(os.path.join(os.getcwd(), 'storage', newfilename))
+        writeDB(title, owner, filepath, timeStamp)
+        
         print('saved file')
         data = {
             'code': 'success',
+            'title': title,
+            'owner': owner,
             'filename': newfilename,
             'timestamp': getTime()
         }
@@ -54,6 +63,7 @@ def upload():
         )
     
     return response
+
     
 
 @app.route('/media', methods=['GET'])
@@ -77,15 +87,15 @@ def getTime():
 def newFileName(filename, timeStamp):
     return filename.rsplit('.', 1)[0] + '_' +  timeStamp + '.' +filename.rsplit('.', 1)[1]
 
-def writeDB(owner, filepath, timestamp):
-    with open('database.csv', mode = 'a') as csv_file:
-        data = ['owner', 'filepath', 'timestamp']
+def writeDB(title = 'title', owner = 'anonymous', filepath ='', timestamp = ''):
+    with open('database.db', mode = 'a', encoding="utf-8") as csv_file:
+        data = ['title', 'owner', 'filepath', 'timestamp']
         writer = csv.DictWriter(csv_file, fieldnames=data)
         #writer.writeheader()
-        writer.writerow({'owner': owner, 'filepath': filepath, 'timestamp': timestamp})
+        writer.writerow({'title': title,'owner': owner, 'filepath': filepath, 'timestamp': timestamp})
 
 def readDB():
-    with open('database.csv', mode = 'r') as csv_file:
+    with open('database.db', mode = 'r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         data = []
