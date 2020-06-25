@@ -2,6 +2,9 @@ from keras.datasets import cifar100
 
 (x_train100, y_train100), (x_test100, y_test100) = cifar100.load_data()
 
+# print(type(x_train100))
+# print(x_train100.shape)
+
 import cv2
 from cv2 import VideoWriter, VideoWriter_fourcc
 
