@@ -1,4 +1,5 @@
 from flask import Flask, flash, request, render_template, Response, jsonify
+from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from collections import OrderedDict 
@@ -15,12 +16,15 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
 
 app  = Flask(__name__, static_folder=static_folder)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
 
 @app.route('/')
 def hello_world():
     return 'Hello, world!'
 
 @app.route('/upload', methods=['POST'])
+@cross_origin()
 def upload():
     #print(request.files.to_dict()[''])
     title = request.form.get('title')
@@ -67,6 +71,7 @@ def upload():
     
 
 @app.route('/media', methods=['GET'])
+@cross_origin()
 def getMedia():
     data = readDB()
     response = app.response_class(
@@ -104,4 +109,3 @@ def readDB():
             line_count += 1
 
         return data
-

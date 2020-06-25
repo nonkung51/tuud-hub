@@ -1,5 +1,8 @@
 client/node_modules
 backend/venv_tuud-hub
 backend/__pycache__
+backend/ngrok.exe
+__pycache__
 .vscode
 res/
+
