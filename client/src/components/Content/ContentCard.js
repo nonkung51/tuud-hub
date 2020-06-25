@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import ContentView from './ContentView';
 
+import { hostUrl } from '../../config.json';
+
 const ContentCard = (props) => {
   const [viewIsOpen, setViewIsOpen] = useState(false);
   const showView = () => {
@@ -20,7 +22,7 @@ const ContentCard = (props) => {
         <img
           className="block bg-gray-500 rounded-t-sm w-full h-40 object-cover cursor-pointer "
           src={
-            'https://2e5badd2fe38.ngrok.io' +
+            hostUrl +
             props.content.filepath.split('.')[1] +
             '.' +
             props.content.filepath.split('.')[2]

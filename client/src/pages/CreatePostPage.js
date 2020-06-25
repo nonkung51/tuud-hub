@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import { hostUrl } from '../config.json';
 import PageFrame from '../components/PageFrame/PageFrame';
 
 const CreatePostPage = () => {
+  const history = useHistory();
   const [postData, setPostData] = useState({
     title: '',
     publisher: '',
     image: null,
   });
+
+  const [loading, setLoading] = useState(false);
 
   const textChangeHandle = (event) => {
     setPostData({
@@ -26,11 +30,11 @@ const CreatePostPage = () => {
   };
 
   const submitHandle = (event) => {
-    console.log(postData);
-
     event.preventDefault();
     // var FormData = require('form-data');
     // var fs = require('fs');
+    setLoading(true);
+
     var data = new FormData();
     data.append('files', postData.image);
     data.append('title', postData.title);
@@ -46,6 +50,8 @@ const CreatePostPage = () => {
 
     axios(config)
       .then((response)=>{
+        setLoading(false);
+        history.push("/content");
         console.log(JSON.stringify(response.data));
       })
       .catch((error)=>{
@@ -61,7 +67,7 @@ const CreatePostPage = () => {
           onSubmit={submitHandle}
         >
           <div className="flex flex-col space-y-1">
-            <label for="title" className="text-2xl font-medium">
+            <label className="text-2xl font-medium">
               Title
             </label>
             <input
@@ -76,7 +82,7 @@ const CreatePostPage = () => {
             />
           </div>
           <div className="flex flex-col space-y-1">
-            <label for="publisher" className="text-2xl font-medium">
+            <label className="text-2xl font-medium">
               Publish by
             </label>
             <input
@@ -94,7 +100,7 @@ const CreatePostPage = () => {
             className="flex py-1 justify-center items-center bg-hub-yellow rounded-sm text-xl text-hub-black font-medium hover:bg-yellow-500 active:bg-yellow-800 focus:outline-none"
             type="submit"
           >
-            PUBLISH
+            {loading ? 'loading...':'PUBLISH'}
           </button>
         </form>
       </div>

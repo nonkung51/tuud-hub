@@ -5,4 +5,6 @@ backend/ngrok.exe
 __pycache__
 .vscode
 res/
-
+backend/storage
+.DS_Store
+__pycache__/model224x224.cpython-37.pyc

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { hostUrl } from '../../config.json';
+
 const ContentView = (props) => {
   return (
     <React.Fragment>
@@ -15,7 +17,7 @@ const ContentView = (props) => {
           <img
             className="flex rounded-lg h-80 xl:h-112"
             src={
-              'https://2e5badd2fe38.ngrok.io' +
+              hostUrl +
               props.content.filepath.split('.')[1] +
               '.' +
               props.content.filepath.split('.')[2]

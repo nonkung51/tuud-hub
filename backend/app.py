@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, render_template, Response, jsonify
+from flask import Flask, flash, request, render_template, Response, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -14,14 +14,10 @@ static_folder = os.path.abspath('./storage')
 UPLOAD_FOLDER = './storage'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
 
-app  = Flask(__name__, static_folder=static_folder)
+app  = Flask(__name__, static_folder=static_folder, static_url_path='/')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app)
-
-@app.route('/')
-def hello_world():
-    return 'Hello, world!'
 
 @app.route('/upload', methods=['POST'])
 @cross_origin()
@@ -109,3 +105,11 @@ def readDB():
             line_count += 1
 
         return data
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists("/storage/" + path):
+        return send_from_directory('storage', path)
+    else:
+        return send_from_directory('storage', 'index.html')
