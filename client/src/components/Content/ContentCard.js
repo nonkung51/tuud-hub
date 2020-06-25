@@ -3,24 +3,28 @@ import { Link } from 'react-router-dom';
 
 import ContentView from './ContentView';
 
-
 const ContentCard = (props) => {
   const [viewIsOpen, setViewIsOpen] = useState(false);
-  const showView = () =>{
+  const showView = () => {
     setViewIsOpen(true);
-  }
-  const hideView = () =>{
+  };
+  const hideView = () => {
     setViewIsOpen(false);
-  }
+  };
 
   return (
     <React.Fragment>
-      {viewIsOpen && <ContentView content={props.content} onClose={hideView}/>}
+      {viewIsOpen && <ContentView content={props.content} onClose={hideView} />}
 
       <div className="flex mx-auto flex-col bg-transparent w-80 h-56">
         <img
           className="block bg-gray-500 rounded-t-sm w-full h-40 object-cover cursor-pointer "
-          src={props.content.imageUrl}
+          src={
+            'https://2e5badd2fe38.ngrok.io' +
+            props.content.filepath.split('.')[1] +
+            '.' +
+            props.content.filepath.split('.')[2]
+          }
           alt={props.content.title}
           onClick={showView}
         />
@@ -30,11 +34,11 @@ const ContentCard = (props) => {
             {props.content.title}
           </div>
           <div className="flex justify-between items-center">
-            <div className="text-sm">{props.content.publishTime}</div>
+            <div className="text-sm">{props.content.timestamp}</div>
             <div className="text-md">
               By{' '}
-              <Link to={`/publisher/${props.content.publisher}`}>
-                {props.content.publisher}
+              <Link to={`/publisher/${props.content.owner}`}>
+                {props.content.owner}
               </Link>
             </div>
           </div>

@@ -16,7 +16,7 @@ const Header = () => {
           className="text-xl font-medium text-hub-black bg-hub-yellow px-4 rounded-sm hover:bg-yellow-500 active:bg-yellow-700"
           to="/createpost"
         >
-          POST
+         POST
         </Link>
       </div>
     </React.Fragment>
