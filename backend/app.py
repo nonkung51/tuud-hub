@@ -24,7 +24,7 @@ def hello_world():
 def upload():
     #print(request.files.to_dict()[''])
     title = request.form.get('title')
-    print(request.form.get('title'))
+    #print(request.form.get('title'))
     owner = request.form.get('owner') 
     file = request.files.to_dict()['files']
 
@@ -51,6 +51,8 @@ def upload():
         print('saved file')
         data = {
             'code': 'success',
+            'title': title,
+            'owner': owner,
             'filename': newfilename,
             'timestamp': getTime()
         }
@@ -93,7 +95,7 @@ def writeDB(title = 'title', owner = 'anonymous', filepath ='', timestamp = ''):
         writer.writerow({'title': title,'owner': owner, 'filepath': filepath, 'timestamp': timestamp})
 
 def readDB():
-    with open('database.db', mode = 'r') as csv_file:
+    with open('database.db', mode = 'r', encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         data = []
