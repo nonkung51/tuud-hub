@@ -2,6 +2,9 @@ from flask import Flask, flash, request, render_template, Response, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from collections import OrderedDict 
+import sys
+sys.path.append('../')
+from model224x224 import predict
 import json
 import os
 import csv
@@ -19,7 +22,7 @@ def hello_world():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    print(request.files.to_dict()[''])
+    #print(request.files.to_dict()[''])
     
     file = request.files.to_dict()['']
 
@@ -39,8 +42,11 @@ def upload():
         timeStamp = getTime()
         newfilename = secure_filename(newFileName(filename, timeStamp))
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], newfilename)
-        writeDB('test', filepath, timeStamp)
         file.save(filepath)
+        #print(os.path.join(os.getcwd(), 'storage' , newfilename))
+        predict(os.path.join(os.getcwd(), 'storage', newfilename))
+        writeDB('test', filepath, timeStamp)
+        
         print('saved file')
         data = {
             'code': 'success',

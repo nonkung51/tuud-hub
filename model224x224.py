@@ -2,7 +2,7 @@ def predict(path):
     import cv2
     import tensorflow.keras as keras
 
-    model = keras.models.load_model('models/model-1593070539.2061813.h5')
+    model = keras.models.load_model('../models/model-1593070539.2061813.h5')
 
     img = cv2.imread(path)
     h, w, _ = img.shape
@@ -22,4 +22,4 @@ def predict(path):
     cv2.imwrite(path, result_img)
 
 if __name__ == '__main__':
-    predict('/Users/non_thakon/Workspace/stupidhackathon/src/res/558000014050901.jpeg')
+    predict('C:/Users/Thana/Documents/GitHub/tuud-hub/cat.jpg')
