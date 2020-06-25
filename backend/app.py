@@ -109,4 +109,3 @@ def readDB():
             line_count += 1
 
         return data
-
