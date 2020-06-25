@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Header from './components/Header/Header.js';
-import HomePage from './pages/HomePage';
+import ContentPage from './pages/ContentPage';
 
 const App = () => {
   return (
@@ -10,10 +10,10 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Switch>
-          <Route path="/" component={HomePage}/>
-          <Route path="/createpost" />
+          <Route exact path="/content" component={ContentPage}/>
+          <Route exact path="/createpost" />
 
-          <Redirect to="/" />
+          <Redirect to="/content" />
         </Switch>
       </BrowserRouter>
     </React.Fragment>
